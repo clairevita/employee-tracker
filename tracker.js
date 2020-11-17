@@ -130,7 +130,7 @@ var connection = mysql.createConnection({
         message: "What would you like to change?",
         choices: [
           "Employee Roles",
-          "Exit"
+          "Return to Main Menu"
         ]
       })
       .then(function(answer) {
@@ -138,8 +138,8 @@ var connection = mysql.createConnection({
         case "Employee Roles":
         //   addNew();
           break;
-          
-        case "exit":
+
+        case "Return to Main Menu":
           runSearch();
           break;
         }
