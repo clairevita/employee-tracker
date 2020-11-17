@@ -1,18 +1,16 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var dotenv = require("dotenv").config();
+
+
+const addElement = require('./exports/addElement');
 
 var connection = mysql.createConnection({
-    host: "localhost",
-  
-    // Your port; if not 3306
-    port: 3306,
-  
-    // Your username
-    user: "root",
-  
-    // Your password
-    password: "",
-    database: "employee_DB"
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_DATABASE
   });
 
   connection.connect(function(err) {
@@ -70,7 +68,7 @@ var connection = mysql.createConnection({
     .then(function(answer) {
       switch (answer.action) {
       case "New Department":
-        // addNew();
+        addElement("New Department");
         break;
 
       case "New Role":
