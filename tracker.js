@@ -55,13 +55,93 @@ var connection = mysql.createConnection({
   }
 
   function addNew(){
+    inquirer
+    .prompt({
+      name: "action",
+      type: "list",
+      message: "What would you like to add?",
+      choices: [
+        "New Department",
+        "New Role",
+        "New Employee",
+        "Return to Main Menu"
+      ]
+    })
+    .then(function(answer) {
+      switch (answer.action) {
+      case "New Department":
+        // addNew();
+        break;
 
+      case "New Role":
+        // viewOld();
+        break;
+
+      case "New Employee":
+        // modifyOld();
+        break;
+
+      case "Return to Main Menu":
+        runSearch();
+        break;
+      }
+    });
   }
 
   function viewOld(){
+    inquirer
+      .prompt({
+        name: "action",
+        type: "list",
+        message: "What would you like to view?",
+        choices: [
+          "Departments",
+          "Roles",
+          "Employees",
+          "Return to Main Menu"
+        ]
+      })
+      .then(function(answer) {
+        switch (answer.action) {
+        case "Departments":
+        //   addNew();
+          break;
+  
+        case "Roles":
+        //   viewOld();
+          break;
+  
+        case "Employees":
+        //   modifyOld();
+          break;
 
+        case "Return to Main Menu":
+          runSearch();
+          break;
+        }
+      });
   }
 
   function modifyOld(){
-      
+    inquirer
+      .prompt({
+        name: "action",
+        type: "list",
+        message: "What would you like to change?",
+        choices: [
+          "Employee Roles",
+          "Exit"
+        ]
+      })
+      .then(function(answer) {
+        switch (answer.action) {
+        case "Employee Roles":
+        //   addNew();
+          break;
+          
+        case "exit":
+          runSearch();
+          break;
+        }
+      });
   }
