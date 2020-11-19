@@ -31,31 +31,37 @@ async function viewElement(what) {
   }
 };
 
-function viewDept(){
-    return viewConnection.query("SELECT id AS ID, name AS Name from department", function(err, results)
+async function viewDept(){
+    await viewConnection.query("SELECT id AS ID, name AS Name from department", function(err, results)
       { 
-        console.table("All Departments", results)
+        return console.table(
+            `
+
+            Press Any Key to Return to Menu
+            `, results)
       });
 }
 
-function viewRole(){
-    viewConnection.query("INSERT INTO role SET ?",
-      {
-        title: answer.title,
-        salary: answer.salary,
-        department_id: departmentid_Int
-      });
-    console.log(`${answer.title} has been created!`);
+async function viewRole(){
+    await viewConnection.query("SELECT id AS ID, title AS Role, salary as Salary from role", function(err, results)
+    { 
+      return console.table(
+          `
+
+          Press Any Key to Return to Menu
+          `, results)
+    });
 }
 
-function viewEmplo(){
-    viewConnection.query("INSERT INTO role SET ?",
-      {
-        title: answer.title,
-        salary: answer.salary,
-        department_id: departmentid_Int
-      });
-    console.table(`${answer.title} has been created!`);
+async function viewEmplo(){
+    await viewConnection.query("SELECT id AS ID, first_name AS First_Name, last_name as Last_Name, role_id as Role_ID from employee", function(err, results)
+    { 
+      return console.table(
+          `
+
+          Press Any Key to Return to Menu
+          `, results)
+    });
 }
 
 module.exports = viewElement;
