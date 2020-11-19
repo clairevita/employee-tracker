@@ -1,7 +1,6 @@
 const mysql = require('mysql');
-var inquirer = require("inquirer");
 var dotenv = require("dotenv").config();
-
+const cTable = require('console.table');
 const runSearch = require('./../tracker');
 
 var viewConnection = mysql.createConnection({
@@ -32,6 +31,31 @@ async function viewElement(what) {
   }
 };
 
+function viewDept(){
+    return viewConnection.query("SELECT id AS ID, name AS Name from department", function(err, results)
+      { 
+        console.table("All Departments", results)
+      });
+}
 
+function viewRole(){
+    viewConnection.query("INSERT INTO role SET ?",
+      {
+        title: answer.title,
+        salary: answer.salary,
+        department_id: departmentid_Int
+      });
+    console.log(`${answer.title} has been created!`);
+}
+
+function viewEmplo(){
+    viewConnection.query("INSERT INTO role SET ?",
+      {
+        title: answer.title,
+        salary: answer.salary,
+        department_id: departmentid_Int
+      });
+    console.table(`${answer.title} has been created!`);
+}
 
 module.exports = viewElement;

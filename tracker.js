@@ -4,7 +4,7 @@ var dotenv  = require("dotenv").config();
 
 
 const addElement = require('./exports/addElement');
-// const viewElement = require('./exports/viewElement');
+const viewElement = require('./exports/viewElement');
 // const modifyElement = require('./exports/modifyElement');
 
 var addConnection = mysql.createConnection({
@@ -90,24 +90,11 @@ addConnection.connect(function(err) {
           "Return to Main Menu"
         ]
       })
-      .then(function(answer) {
-        switch (answer.action) {
-        case "Departments":
-        //   addNew();
-          break;
-  
-        case "Roles":
-        //   viewOld();
-          break;
-  
-        case "Employees":
-        //   modifyOld();
-          break;
-
-        case "Return to Main Menu":
+      .then(async function(answer) {
+        
+          await viewElement(answer);
           runSearch();
-          break;
-        }
+        
       });
   }
 
