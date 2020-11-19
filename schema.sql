@@ -14,15 +14,14 @@ CREATE TABLE role (
   title VARCHAR(30) NOT NULL,
   salary decimal (8,2),
   department_id INT,
-  department_id REFERENCES department(id),
   PRIMARY KEY (id)
 );
 
 CREATE TABLE employee (
+  id INT NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
   role_id INT NOT NULL,
-  manager_id INT NOT NULL,
-  manager_id REFERENCES manager(id),
+  manager_id INT NULL,
   PRIMARY KEY (id)
-)
+);

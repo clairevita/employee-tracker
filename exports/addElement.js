@@ -5,6 +5,7 @@ var dotenv = require("dotenv").config();
 const runSearch = require('./../tracker');
 
 var addConnection = mysql.createConnection({
+  multipleStatements: true,
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   user: process.env.DB_USER,
@@ -89,26 +90,13 @@ function addRole() {
 
 function addEmplo() {
   let role = [];
-  let managerId = 1;
-  let managers = [];
-
   addConnection.query("SELECT * FROM role", function (err, response) {
     if (err) throw err;
     for (let i = 0; i < response.length; i++) {
       let roleEl = response[i].id + ". " + response[i].title;
       role.push(roleEl);
     }
-  });
-//GO DEPARTMENT THEN FIRST THEN LAST... THEN LOOK AT EMPLOYEES OF DEPARTMENT AND SELECT A MANAGER
-  addConnection.query("SELECT * FROM employee", function (err, response) {
-    if (err) throw err;
-    for (let j = 0; j < response.length; j++) {
-      let managEl = response[i].id + ". " + response[i].first_name + " " + response[i].last_name;
-      managers.push(managEl);
-    }
-  });
-  console.log(managerId);
-  console.log(managers);
+  });  
   return inquirer.prompt([{
     type: "input",
     name: "first_name",
@@ -122,29 +110,18 @@ function addEmplo() {
     name: "role",
     message: "Select the role the employee should be listed as.",
     choices: role
-  }, {
-    type: "list",
-    name: "manager",
-    message: "Select the manager this employee will be working for.",
-    choices: managers
   }
 ]).then(function (answer) {
   roleid_Arr = answer.role.split(". ");
   roleid_Str = roleid_Arr[0];
   roleid_Int = parseInt(roleid_Str);
-  
-  manager_Arr = answer.manager.split(". ");
-  manager_Str = manager_Arr[0];
-  manager_Int = parseInt(manager_Str);
  
   addConnection.query("INSERT INTO employee SET ?",
   {
     first_name: answer.first_name,
     last_name: answer.last_name,
     role_id: roleid_Int,
-    manager_id: manager_Int
   });
-
     console.log(`${answer.first_name} ${answer.last_name} has been created!`);
   });
 }
