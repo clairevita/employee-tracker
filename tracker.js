@@ -45,13 +45,16 @@ var connection = mysql.createConnection({
           modifyOld();
           break;
 
-        case "exit":
-          connection.end();
+        case "Exit":
+          quit();
           break;
         }
       });
   }
-
+  function quit(){
+    console.log("Thanks for using my app! -CV");
+    process.exit();
+  }
   function addNew(){
     inquirer
     .prompt({
