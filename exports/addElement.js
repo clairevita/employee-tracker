@@ -89,25 +89,26 @@ function addRole() {
 
 function addEmplo() {
   let role = [];
-  let managerId;
+  let managerId = 1;
   let managers = [];
-  addConnection.query("SELECT * FROM role", function (err, response) {
 
+  addConnection.query("SELECT * FROM role", function (err, response) {
+    if (err) throw err;
     for (let i = 0; i < response.length; i++) {
       let roleEl = response[i].id + ". " + response[i].title;
       role.push(roleEl);
-      if (role[i].name == "Manager" || role[i].name == "manager"){
-        managerId = role[i].id;
-      }
     }
   });
-  addConnection.query("SELECT * FROM employee WHERE ?", {role_id: managerId}, function (err, response) {
-    for (let i = 0; i < response.length; i++) {
-      let manaEl = response[i].id + ". " + response[i].first_name + " " + response[i].last_name;
-      managers.push(manaEl);
+//GO DEPARTMENT THEN FIRST THEN LAST... THEN LOOK AT EMPLOYEES OF DEPARTMENT AND SELECT A MANAGER
+  addConnection.query("SELECT * FROM employee", function (err, response) {
+    if (err) throw err;
+    for (let j = 0; j < response.length; j++) {
+      let managEl = response[i].id + ". " + response[i].first_name + " " + response[i].last_name;
+      managers.push(managEl);
     }
   });
-
+  console.log(managerId);
+  console.log(managers);
   return inquirer.prompt([{
     type: "input",
     name: "first_name",
@@ -124,7 +125,7 @@ function addEmplo() {
   }, {
     type: "list",
     name: "manager",
-    message: "Select the manager this employee will be working for",
+    message: "Select the manager this employee will be working for.",
     choices: managers
   }
 ]).then(function (answer) {
