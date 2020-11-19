@@ -24,7 +24,7 @@ async function addElement(what) {
     runSearch;
   } else if (what.action == "New Role") {
     await addRole();
-
+    runSearch;
   } else if (what.action == "New Employee") {
     addEmplo();
 
@@ -49,7 +49,7 @@ function addRole() {
   addConnection.query("SELECT * FROM department", function (err, response) {
 
     for (let i = 0; i < response.length; i++) {
-      let deptEl = response[i].name;
+      let deptEl = response[i].id + ". " + response[i].name;
       departments.push(deptEl);
     }
   });
@@ -72,22 +72,21 @@ function addRole() {
 
   }
   ]).then(function (answer) {
-    var departmentid = 0;
-    for (let i = 0; i < departments.length; i++) {
-      if (answer.dept == departments[i].name) {
-        departmentid = departments[i].id;
-      }
-    }
+
+    departmentid_Arr = answer.dept.split(". ");
+    departmentid_Str = departmentid_Arr[0];
+    departmentid_Int = parseInt(departmentid_Str)
+    
 
     addConnection.query("INSERT INTO role SET ?",
       {
         title: answer.title,
         salary: answer.salary,
-        department_id: departmentid
+        department_id: departmentid_Int
       });
     console.log(`${answer.title} has been created!`);
 
-    runSearch;
+    
   });
 }
 
