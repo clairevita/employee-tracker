@@ -4,19 +4,22 @@ var dotenv  = require("dotenv").config();
 
 
 const addElement = require('./exports/addElement');
+// const viewElement = require('./exports/viewElement');
+// const modifyElement = require('./exports/modifyElement');
 
-var connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_DATABASE
-  });
+var addConnection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_DATABASE
+});
 
-  connection.connect(function(err) {
-    if (err) throw err;
-    runSearch();
-  });
+addConnection.connect(function(err) {
+  if (err) throw err;
+});
+
+  runSearch();
 
   function runSearch() {
     inquirer
@@ -68,24 +71,9 @@ var connection = mysql.createConnection({
         "Return to Main Menu"
       ]
     })
-    .then(function(answer) {
-      switch (answer.action) {
-      case "New Department":
-        addElement("New Department");
-        break;
-
-      case "New Role":
-        // viewOld();
-        break;
-
-      case "New Employee":
-        // modifyOld();
-        break;
-
-      case "Return to Main Menu":
-        runSearch();
-        break;
-      }
+    .then(async function(answer) {
+     await addElement(answer);
+      runSearch();
     });
   }
 
@@ -146,3 +134,5 @@ var connection = mysql.createConnection({
         }
       });
   }
+
+  module.exports = runSearch;
