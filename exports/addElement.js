@@ -26,8 +26,8 @@ async function addElement(what) {
     await addRole();
     runSearch;
   } else if (what.action == "New Employee") {
-    addEmplo();
-
+    await addEmplo();
+    runSearch;
   }
 };
 
@@ -75,9 +75,8 @@ function addRole() {
 
     departmentid_Arr = answer.dept.split(". ");
     departmentid_Str = departmentid_Arr[0];
-    departmentid_Int = parseInt(departmentid_Str)
+    departmentid_Int = parseInt(departmentid_Str);
     
-
     addConnection.query("INSERT INTO role SET ?",
       {
         title: answer.title,
@@ -85,13 +84,60 @@ function addRole() {
         department_id: departmentid_Int
       });
     console.log(`${answer.title} has been created!`);
-
-    
   });
 }
 
 function addEmplo() {
+  toPush = {};
+  department = [];
+  addConnection.query("SELECT * FROM department", function (err, response) {
 
+    for (let i = 0; i < response.length; i++) {
+      let deptEl = response[i].id + ". " + response[i].name;
+      departments.push(deptEl);
+    }
+  });
+
+
+
+  return inquirer.prompt([{
+    type: "input",
+    name: "first_name",
+    message: "What is the employee's first name?"
+  }, {
+    type: "input",
+    name: "last_name",
+    message: "What is the employee's last name?"
+  }, {
+    type: "list",
+    name: "dept",
+    message: "Select the department the employee should be placed into",
+    choices: department
+  }
+]).then(function (answer) {
+    toPush = {
+      first_name = answer.first_name,
+      lat_name = answer.last_name,
+      
+    }
+
+
+    role = [];
+    addConnection.query("SELECT * FROM role", function (err, response) {
+      for (let i = 0; i < response.length; i++) {
+        let roleEl = response[i].id + ". " + response[i].title;
+        departments.push(roleEl);
+      }
+    });
+
+    inquirer.prompt([{
+      type: "list",
+      name: "role"
+    }])
+  
+    
+    console.log(`${answer.dept} has been created!`);
+  });
 }
 
 module.exports = addElement;
