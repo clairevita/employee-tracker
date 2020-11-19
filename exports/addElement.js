@@ -88,17 +88,25 @@ function addRole() {
 }
 
 function addEmplo() {
-  toPush = {};
-  department = [];
-  addConnection.query("SELECT * FROM department", function (err, response) {
+  let role = [];
+  let managerId;
+  let managers = [];
+  addConnection.query("SELECT * FROM role", function (err, response) {
 
     for (let i = 0; i < response.length; i++) {
-      let deptEl = response[i].id + ". " + response[i].name;
-      departments.push(deptEl);
+      let roleEl = response[i].id + ". " + response[i].title;
+      role.push(roleEl);
+      if (role[i].name == "Manager" || role[i].name == "manager"){
+        managerId = role[i].id;
+      }
     }
   });
-
-
+  addConnection.query("SELECT * FROM employee WHERE ?", {role_id: managerId}, function (err, response) {
+    for (let i = 0; i < response.length; i++) {
+      let manaEl = response[i].id + ". " + response[i].first_name + " " + response[i].last_name;
+      managers.push(manaEl);
+    }
+  });
 
   return inquirer.prompt([{
     type: "input",
@@ -110,33 +118,33 @@ function addEmplo() {
     message: "What is the employee's last name?"
   }, {
     type: "list",
-    name: "dept",
-    message: "Select the department the employee should be placed into",
-    choices: department
+    name: "role",
+    message: "Select the role the employee should be listed as.",
+    choices: role
+  }, {
+    type: "list",
+    name: "manager",
+    message: "Select the manager this employee will be working for",
+    choices: managers
   }
 ]).then(function (answer) {
-    toPush = {
-      first_name = answer.first_name,
-      lat_name = answer.last_name,
-      
-    }
-
-
-    role = [];
-    addConnection.query("SELECT * FROM role", function (err, response) {
-      for (let i = 0; i < response.length; i++) {
-        let roleEl = response[i].id + ". " + response[i].title;
-        departments.push(roleEl);
-      }
-    });
-
-    inquirer.prompt([{
-      type: "list",
-      name: "role"
-    }])
+  roleid_Arr = answer.role.split(". ");
+  roleid_Str = roleid_Arr[0];
+  roleid_Int = parseInt(roleid_Str);
   
-    
-    console.log(`${answer.dept} has been created!`);
+  manager_Arr = answer.manager.split(". ");
+  manager_Str = manager_Arr[0];
+  manager_Int = parseInt(manager_Str);
+ 
+  addConnection.query("INSERT INTO employee SET ?",
+  {
+    first_name: answer.first_name,
+    last_name: answer.last_name,
+    role_id: roleid_Int,
+    manager_id: manager_Int
+  });
+
+    console.log(`${answer.first_name} ${answer.last_name} has been created!`);
   });
 }
 
