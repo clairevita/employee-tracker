@@ -112,7 +112,7 @@ addConnection.connect(function(err) {
       .then(function(answer) {
         switch (answer.action) {
         case "Employee Roles":
-          modifyElement;
+          modifyElement(answer.action);
           break;
 
         case "Return to Main Menu":

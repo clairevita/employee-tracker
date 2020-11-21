@@ -19,7 +19,6 @@ addConnection.connect(function (err) {
 
 async function addElement(what) {
 
-  console.log(what)
   if (what.action == "New Department") {
     await addDept();
     runSearch;

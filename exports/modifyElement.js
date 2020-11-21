@@ -1,9 +1,10 @@
 const mysql = require('mysql');
 var dotenv = require("dotenv").config();
+var inquirer = require("inquirer");
 const cTable = require('console.table');
 const runSearch = require('./../tracker');
 
-var viewConnection = mysql.createConnection({
+var modifyConnection = mysql.createConnection({
   multipleStatements: true,
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
@@ -12,20 +13,46 @@ var viewConnection = mysql.createConnection({
   database: process.env.DB_DATABASE
 });
 
-viewConnection.connect(function (err) {
+modifyConnection.connect(function (err) {
   if (err) throw err;
 });
 
-async function modifyElement(){
-await modifyRole();
-runSearch;
+ async function modifyElement(answer){
+  selectDep();
+ 
+  // selectDep();
+  
 }
 
-async function modifyRole(){
-    await viewConnection.query("SELECT id AS ID, name AS Name from department", function(err, results)
+function selectDep(){
+  departments = [];
+    modifyConnection.query("SELECT * from department", function(err, response)
+    { 
+      if (err) throw err;
+
+      for (let i=0; i<response.length; i++){
+        let depEl = response[i].id + ". " + response[i].name;
+        departments.push(depEl);
+      }
+      inquirer.prompt([{
+        type: "list",
+        name: "department",
+        message: "What department is the employee you want to change located?",
+        choices: departments
+      }]).then(function(answer){
+        employeeSelect(answer);
+      })
+    });
+}
+
+function employeeSelect(department){
+  modifyConnection.query("SELECT * from employee WHERE dep", function(err, response)
     { 
 
     });
+    
 }
+
+
 
 module.exports = modifyElement;
