@@ -34,4 +34,4 @@ INSERT INTO role (title, salary, department_id) VALUES ('Junior Engineer', 60000
 INSERT INTO role (title, salary, department_id) VALUES ('Senior Sales Rep', 80000, 2);
 INSERT INTO role (title, salary, department_id) VALUES ('Junior Sales Rep', 50000, 2);
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('Willem', 'Riley', 1, 1);
+INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('Claire', 'Vita', 1, 1);
