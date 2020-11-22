@@ -18,9 +18,10 @@ modifyConnection.connect(function (err) {
 });
 
  async function modifyElement(answer){
-  selectEmp();
- 
-  // selectDep();
+  await selectEmp();
+  runSearch;
+  
+  
   
 }
 
@@ -29,40 +30,39 @@ function selectEmp(){
     modifyConnection.query("SELECT * from employee", function(err, response)
     { 
       if (err) throw err;
-
       for (let i=0; i<response.length; i++){
-        let empEl = response[i].id + ". " + response[i].name;
+        let empEl = response[i].id + ". " + response[i].first_name + " " + response[i].last_name;
         employees.push(empEl);
       }
     return inquirer.prompt([{
         type: "list",
-        name: "department",
+        name: "employee",
         message: "Which employee would you like to change?",
         choices: employees
       }]).then(function(answer){
-        selectRole(answer);
+        emp_Arr = answer.employee.split(". ");
+        emp_Str = emp_Arr[0];
+        emp_Int = parseInt(emp_Str);
+        selectRole(emp_Int);
       })
     });
 }
 
 function selectRole(employee){
-  emp_Arr = employee.dept.split(". ");
-  emp_Str = emp_Arr[0];
-  emp_Int = parseInt(emp_Str);
   roles = [];
   modifyConnection.query("SELECT * from role", function(err, response)
     { 
       for (let i=0; i<response.length; i++){
-        let roleEl = response[i].id + ". " + response[i].name;
+        let roleEl = response[i].id + ". " + response[i].title + " |  $" + response[i].salary;
         roles.push(roleEl);
       }
      return inquirer.prompt([{
         type: "list",
-        name: "employees",
-        message: `Select the role you would like to switch ${emp_Arr[1]} to.`,
+        name: "roles",
+        message: `Select the role you would like to switch the employee to.`,
         choices: roles
       }]).then(function(answer){
-        role_Arr = answer.dept.split(". ");
+        role_Arr = answer.roles.split(". ");
         role_Str = role_Arr[0];
         role_Int = parseInt(role_Str);
         
@@ -73,10 +73,13 @@ function selectRole(employee){
             role_id: role_Int
           },
           {
-            id: emp_Int
+            id: employee
           }
-        ])
-      })
+        ]);
+        console.log(`${answer.title} has been created!`);
+        
+      });
+      
     });
     
 }
