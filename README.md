@@ -1,7 +1,7 @@
 
   [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.porg/licenses/MIT)
   # Employee Tracker CMS
-  [https://vimeo.com/482331213](View the Demonstration Video Here!)
+  [View the Demonstration Video Here!](https://vimeo.com/482331213)
   ## Table of Contents
   - [About](#about)
   - [Installation](#installation)
