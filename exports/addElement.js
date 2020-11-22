@@ -76,7 +76,7 @@ function addRole() {
     departmentid_Arr = answer.dept.split(". ");
     departmentid_Str = departmentid_Arr[0];
     departmentid_Int = parseInt(departmentid_Str);
-    
+
     addConnection.query("INSERT INTO role SET ?",
       {
         title: answer.title,
@@ -95,7 +95,7 @@ function addEmplo() {
       let roleEl = response[i].id + ". " + response[i].title;
       role.push(roleEl);
     }
-  });  
+  });
   return inquirer.prompt([{
     type: "input",
     name: "first_name",
@@ -110,17 +110,17 @@ function addEmplo() {
     message: "Select the role the employee should be listed as.",
     choices: role
   }
-]).then(function (answer) {
-  roleid_Arr = answer.role.split(". ");
-  roleid_Str = roleid_Arr[0];
-  roleid_Int = parseInt(roleid_Str);
- 
-  addConnection.query("INSERT INTO employee SET ?",
-  {
-    first_name: answer.first_name,
-    last_name: answer.last_name,
-    role_id: roleid_Int,
-  });
+  ]).then(function (answer) {
+    roleid_Arr = answer.role.split(". ");
+    roleid_Str = roleid_Arr[0];
+    roleid_Int = parseInt(roleid_Str);
+
+    addConnection.query("INSERT INTO employee SET ?",
+      {
+        first_name: answer.first_name,
+        last_name: answer.last_name,
+        role_id: roleid_Int,
+      });
     console.log(`${answer.first_name} ${answer.last_name} has been created!`);
   });
 }

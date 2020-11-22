@@ -109,16 +109,9 @@ addConnection.connect(function(err) {
           "Return to Main Menu"
         ]
       })
-      .then(function(answer) {
-        switch (answer.action) {
-        case "Employee Roles":
-          modifyElement(answer.action);
-          break;
-
-        case "Return to Main Menu":
+      .then(async function(answer) {
+          await modifyElement(answer.action);
           runSearch();
-          break;
-        }
       });
   }
 
