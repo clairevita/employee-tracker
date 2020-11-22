@@ -5,7 +5,7 @@ var dotenv = require("dotenv").config();
 
 const addElement = require('./exports/addElement');
 const viewElement = require('./exports/viewElement');
-const modifyElement = require('./exports/modifyElement');
+
 
 var addConnection = mysql.createConnection({
   host: process.env.DB_HOST,
